@@ -12,74 +12,60 @@ class EmployeeForm extends React.Component {
     };
   }
 
-  handleChange = (event) => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
+  // Handle input changes
+  handleChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
   };
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    console.log('Form submitted:', this.state);
-    this.setState({
-      name: '',
-      email: '',
-      title: '',
-      department: ''
-    });
-  };
+  // Handle form submission
+  handleSubmit = (e) => {
+  e.preventDefault();
+  console.log('Submitted Employee:', this.state);
+  this.props.onAdd(this.state); // Pass data to App.js
+  this.setState({
+    name: '',
+    email: '',
+    title: '',
+    department: ''
+  });
+};
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={this.state.name}
-            onChange={this.handleChange}
-            className="form-control"
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={this.state.email}
-            onChange={this.handleChange}
-            className="form-control"
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="title">Job Title:</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={this.state.title}
-            onChange={this.handleChange}
-            className="form-control"
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="department">Department:</label>
-          <input
-            type="text"
-            id="department"
-            name="department"
-            value={this.state.department}
-            onChange={this.handleChange}
-            className="form-control"
-          />
-        </div>
-
-        <button type="submit" className="btn">Submit</button>
+      <form className="employee-form" onSubmit={this.handleSubmit}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Employee Name"
+          value={this.state.name}
+          onChange={this.handleChange}
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={this.state.email}
+          onChange={this.handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="title"
+          placeholder="Job Title"
+          value={this.state.title}
+          onChange={this.handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="department"
+          placeholder="Department"
+          value={this.state.department}
+          onChange={this.handleChange}
+          required
+        />
+        <button type="submit">Add Employee</button>
       </form>
     );
   }
