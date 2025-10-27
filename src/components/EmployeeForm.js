@@ -7,28 +7,33 @@ class EmployeeForm extends React.Component {
     this.state = {
       name: '',
       email: '',
-      title: '',
+      jobTitle: '',
       department: ''
     };
   }
 
-  // Handle input changes
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  // Handle form submission
   handleSubmit = (e) => {
-  e.preventDefault();
-  console.log('Submitted Employee:', this.state);
-  this.props.onAdd(this.state); // Pass data to App.js
-  this.setState({
-    name: '',
-    email: '',
-    title: '',
-    department: ''
-  });
-};
+    e.preventDefault();
+    const newEmployee = {
+      EmployeeId: Date.now(),
+      name: this.state.name,
+      email: this.state.email,
+      jobTitle: this.state.jobTitle,
+      department: this.state.department
+    };
+    console.log('Submitted Employee:', newEmployee);
+    this.props.onAdd(newEmployee);
+    this.setState({
+      name: '',
+      email: '',
+      jobTitle: '',
+      department: ''
+    });
+  };
 
   render() {
     return (
@@ -51,9 +56,9 @@ class EmployeeForm extends React.Component {
         />
         <input
           type="text"
-          name="title"
+          name="jobTitle"
           placeholder="Job Title"
-          value={this.state.title}
+          value={this.state.jobTitle}
           onChange={this.handleChange}
           required
         />

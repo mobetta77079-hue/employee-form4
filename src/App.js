@@ -1,41 +1,46 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import EmployeeForm from './components/EmployeeForm';
+import EmployeeList from './components/EmployeeList';
+import EmployeeDetail from './components/EmployeeDetail';
+import './App.css';
 
 function App() {
   const [employees, setEmployees] = useState([]);
 
-  // Load data from local storage on first render
   useEffect(() => {
-    const storedData = localStorage.getItem('employees');
-    if (storedData) {
-      setEmployees(JSON.parse(storedData));
+    const storedEmployees = localStorage.getItem('employees');
+    if (storedEmployees) {
+      setEmployees(JSON.parse(storedEmployees));
     }
   }, []);
 
-  // Save data to local storage
-  const saveData = (data) => {
-    localStorage.setItem('employees', JSON.stringify(data));
+  useEffect(() => {
+    localStorage.setItem('employees', JSON.stringify(employees));
+  }, [employees]);
+
+  const handleAddEmployee = (employee) => {
+    setEmployees([...employees, employee]);
   };
 
-  // Add new employee and update local storage
-const addEmployee = (employee) => {
-  const updatedEmployees = [...employees, employee];
-  setEmployees(updatedEmployees);
-  saveData(updatedEmployees);
-};
-
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Employee Form</h1>
-      <EmployeeForm onAdd={addEmployee} />
-      <h2>Employee List</h2>
-      <ul>
-        {employees.map((emp, index) => (
-          <li key={index}>
-            {emp.name} - {emp.role}
-          </li>
-        ))}
-      </ul>
+    <div className="App">
+      <h1>Employee Directory</h1>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <EmployeeForm onAdd={handleAddEmployee} />
+              <EmployeeList employees={employees} />
+            </>
+          }
+        />
+        <Route
+          path="/employees/:id"
+          element={<EmployeeDetail employees={employees} />}
+        />
+      </Routes>
     </div>
   );
 }
