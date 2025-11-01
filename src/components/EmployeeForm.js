@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/layout.css';
 import './EmployeeForm.css';
 
 class EmployeeForm extends React.Component {

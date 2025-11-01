@@ -1,47 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+
+import Home from './pages/Home';
 import EmployeeForm from './components/EmployeeForm';
 import EmployeeList from './components/EmployeeList';
-import EmployeeDetail from './components/EmployeeDetail';
-import './App.css';
+import Layout from './components/Layout';
 
 function App() {
   const [employees, setEmployees] = useState([]);
 
-  useEffect(() => {
-    const storedEmployees = localStorage.getItem('employees');
-    if (storedEmployees) {
-      setEmployees(JSON.parse(storedEmployees));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('employees', JSON.stringify(employees));
-  }, [employees]);
-
-  const handleAddEmployee = (employee) => {
-    setEmployees([...employees, employee]);
+  const handleAddEmployee = (newEmployee) => {
+    setEmployees((prevEmployees) => [...prevEmployees, newEmployee]);
+    console.log('Employee added:', newEmployee);
   };
 
   return (
-    <div className="App">
-      <h1>Employee Directory</h1>
+    <Layout>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <EmployeeForm onAdd={handleAddEmployee} />
-              <EmployeeList employees={employees} />
-            </>
-          }
-        />
-        <Route
-          path="/employees/:id"
-          element={<EmployeeDetail employees={employees} />}
-        />
+        <Route path="/" element={<Home />} />
+        <Route path="/form" element={<EmployeeForm onAdd={handleAddEmployee} />} />
+        <Route path="/list" element={<EmployeeList employees={employees} />} />
+        <Route path="*" element={<h2>404 - Page Not Found</h2>} />
       </Routes>
-    </div>
+    </Layout>
   );
 }
 
